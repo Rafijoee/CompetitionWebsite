@@ -87,9 +87,12 @@ class DataTimController extends Controller
     }
 
     public function editTeamStage($category, Teams $team)
-    {
-        $stages = Stages::all(); 
-        return view('admin.tims.edit', compact('team', 'stages'));
+    {   
+        $team = Teams::find($team->id);
+        $category = Categories::where('id', $category)->firstOrFail();
+        $stages = $category->stages;
+        $members = $team->members;
+        return view('admin.tims.edit', compact('team', 'stages', 'members'));
     }
 
 }

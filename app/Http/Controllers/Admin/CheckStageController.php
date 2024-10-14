@@ -81,7 +81,7 @@ class CheckStageController extends Controller
             return redirect()->back()->with('error', 'Tim tidak ditemukan.');
         }
         $members = $team->members;
-        $filePath = storage_path("app {$members->first()->active_certificate}");
+        $filePath = storage_path("app {$members?->first()?->active_certificate}");
         
         // Ambil anggota terkait
         return view('admin.checkstage.update', compact('team', 'members', 'path1', 'name', 'path2', 'path3'));
