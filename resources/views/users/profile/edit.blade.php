@@ -18,16 +18,15 @@
                 </div>
                 <div class="space-y-6">
                     <label for="team_name" class="block mb-2 text-sm font-medium text-gray-900">Nama Team</label>
-                    <input value="{{ old('team_name', $team->team_name) }}" name="team_name" type="text" id="team_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    <input value="{{( $team->team_name) }}" name="team_name" type="text" id="team_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                 </div>
                 <div class="mb-6">
                     <label for="phone" class="block mb-2 text-sm font-medium text-gray-900">No Telepon</label>
-                    <input value="{{ old('phone', $team->phone) }}" name="phone" type="text" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    <input value="{{( $team->phone) }}" name="phone" type="text" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                     @error('phone')
                     <div class="text-sm text-red-600 mt-2">{{ $message }}</div>
                     @enderror
                 </div>
-                @if(is_null($path1))
                 <div class="mb-6">
                     <label for="category_id" class="block mb-2 text-sm font-medium text-gray-900">Kategori Lomba</label>
                     <select name="category_id" id="category_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
@@ -42,19 +41,7 @@
                     <div class="text-sm text-red-600 mt-2">{{ $message }}</div>
                     @enderror
                 </div>
-                @else
-                <div class="mb-6">
-                    <label for="category_id" class="block mb-2 text-sm font-medium text-gray-900">Kategori Lomba</label>
-                    <select name="category_id_display" id="category_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled>
-                        <option value="{{$stage_id}}" selected>{{$team ? $team->category->category_name : ''}}</option>
-                    </select>
-                    <input type="hidden" name="category_id" value="{{$stage_id}}">
-                    <span class="text-red-300"> *Kamu tidak bisa mengubah data kategori lomba jika tim kamu sudah mengunggah file ke submission</span>
-                    @error('category_id')
-                    <div class="text-sm text-red-600 mt-2">{{ $message }}</div>
-                    @enderror
-                </div>
-                @endif
+                
                 <div class="mb-6">
                     <label for="univ" class="block mb-2 text-sm font-medium text-gray-900">Universitas</label>
                     <input value="{{ old('univ', $univ) }}" name="univ" type="text" id="univ" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
@@ -75,7 +62,7 @@
                     </h1>
                     <div class="mb-6">
                         <label for="name_{{$role}}" class="block mb-2 text-sm font-medium text-gray-900">Nama Lengkap</label>
-                        <input name="name_{{$role}}" type="text" id="name_{{$role}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <input name="name_{{$role}}" type="text" id="name_{{$role}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="{{  old('name_' . $role) }}">
                         @error('name_{{$role}}')
                         <div class="text-sm text-red-600 mt-2">{{ $message }}</div>
                         @enderror

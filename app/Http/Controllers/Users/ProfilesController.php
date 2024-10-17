@@ -73,10 +73,9 @@ class ProfilesController extends Controller
     public function create()
     {
         $categories = Categories::all();
-        $universities = Universities::all()->sortByDesc('name');
         $team = null;
         $members = null;
-        return view('users.profile.form', compact('categories', 'universities', 'team', 'members'));
+        return view('users.profile.form', compact('categories', 'team', 'members'));
     }
 
     public function show($id)
@@ -91,28 +90,28 @@ class ProfilesController extends Controller
 
     public function store(StoreProfileRequest $request)
     {
+
         $total_members = $request->name_anggota_3 ? 3 : 2;
 
-        $category_stage_map = [
-            1 => 1,
-            2 => 4,
-            3 => 7,
-            4 => 10
-        ];
-        $stage_id = isset($category_stage_map[$request->category_id]) ? $category_stage_map[$request->category_id] : null;
+        $category = Categories::with('stages')->findOrFail($request->category_id);
 
+        // Ambil stage pertama (berdasarkan urutan id atau aturan lain)
+        $stage_id = $category->stages()->orderBy('id')->pluck('id')->first();
+        // Jika tidak ada stage yang ditemukan, bisa menangani error
+        if (!$stage_id) {
+            return redirect()->back()->with('error', 'Kategori yang dipilih tidak memiliki stage.');
+        }
         DB::beginTransaction();
         try {
             $team = Teams::create([
-                'team_name' => $request->team_name,
-                'phone' => $request->phone,
-                'category_id' => $request->category_id,
-                'verified_status' => 'unverified', // 'pending', 'verified', 'rejected
                 'user_id' => Auth::id(),
-                'total_members' => $total_members,
+                'phone' => $request->phone,
+                'team_name' => $request->team_name,
                 'stage_id' => $stage_id,
+                'verified_status' => 'unverified', // 'pending', 'verified', 'rejected
+                'category_id' => $request->category_id,
+                'total_members' => $total_members,
             ]);
-
             for ($i = 1; $i <= $total_members; $i++) {
                 $univ = $request->univ;
                 $name = $request['name_anggota_' . $i];
@@ -125,10 +124,6 @@ class ProfilesController extends Controller
                     'member_role' => $i == 1 ? 'ketua' : 'anggota',
                 ]);
             }
-            $team_submission = TeamSubmissions::create([
-                'team_id' => $team->id,
-                'stage_id' => $stage_id,
-            ]);
             DB::commit();
             return redirect('dashboard')->with('success', 'Tim berhasil dibuat!');
         } catch (\Exception $e) {
@@ -164,17 +159,15 @@ class ProfilesController extends Controller
         $team_id = $team->id;
         $members = Members::where('team_id', $team_id)->get();
         $stage_id = $team->stage_id;
-        $path1 = TeamSubmissions::where('team_id', $team_id)?->pluck('path_1')?->first();
         $univ = $members->first()?->universitas;
         $categories = Categories::all();
-        $universities = Universities::all();
         $members = $team->members;
 
-        return view('users.profile.edit', compact('team', 'categories', 'universities', 'members', 'univ', 'path1', 'stage_id', 'members'));
+        return view('users.profile.edit', compact('team', 'categories', 'members', 'univ', 'stage_id', 'members'));
     }
 
 
-        public function update(StoreProfileRequest $request, string $id)
+    public function update(StoreProfileRequest $request, string $id)
     {
         $team = Teams::findOrFail($id);
         $total_members = $request->name_anggota_3 ? 3 : 2;
@@ -185,7 +178,7 @@ class ProfilesController extends Controller
             4 => 10
         ];
         $stage_id = isset($category_stage_map[$request->category_id]) ? $category_stage_map[$request->category_id] : null;
-    
+
         DB::beginTransaction();
         try {
             $team->update([
@@ -196,13 +189,13 @@ class ProfilesController extends Controller
                 'total_members' => $total_members,
                 'stage_id' => $stage_id,
             ]);
-    
+
             for ($i = 1; $i <= $total_members; $i++) {
                 $member = Members::where('team_id', $team->id)->skip($i - 1)->first();
-    
+
                 if (!$member) {
                     $active_path = $request->hasFile('active_anggota_' . $i) ? $request->file('active_anggota_' . $i)->store($request->team_name . '/active') : null;
-    
+
                     Members::create([
                         'team_id' => $team->id,
                         'full_name' => $request['name_anggota_' . $i],
@@ -214,7 +207,7 @@ class ProfilesController extends Controller
                     if ($request->hasFile('active_anggota_' . $i)) {
                         $active_path = $request->file('active_anggota_' . $i)->store($request->team_name . '/active');
                     }
-    
+
                     $member->update([
                         'full_name' => $request['name_anggota_' . $i],
                         'universitas' => $request['univ'],
@@ -222,7 +215,7 @@ class ProfilesController extends Controller
                     ]);
                 }
             }
-    
+
             DB::commit();
             return redirect('/dashboard')->with('success', 'Tim berhasil diperbarui!');
         } catch (\Exception $e) {
@@ -230,8 +223,8 @@ class ProfilesController extends Controller
             return redirect()->back()->with('error', 'Gagal memperbarui tim');
         }
     }
-    
-    public function submission ()
+
+    public function submission()
     {
         $user = Auth::user()->id;
         $team = Teams::where('user_id', $user)->first();

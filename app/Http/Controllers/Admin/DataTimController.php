@@ -92,7 +92,23 @@ class DataTimController extends Controller
         $category = Categories::where('id', $category)->firstOrFail();
         $stages = $category->stages;
         $members = $team->members;
-        return view('admin.tims.edit', compact('team', 'stages', 'members'));
+        return view('admin.tims.edit', compact('team', 'stages', 'members', 'category'));
+    }
+
+    public function updateTeamStage(Request $request, $category_name, Teams $team)
+    {
+
+        $team = Teams::find($team->id);
+        try {
+            $team->update([
+                'stage_id' => $request->stage_id,
+                'verified_status' => $request->verification
+            ]);
+        } catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()->with('error', 'Gagal mengubah data tim');
+        }
+        return redirect()->route('category.teams', $category_name)->with('success', 'Berhasil mengubah data tim');
     }
 
 }
