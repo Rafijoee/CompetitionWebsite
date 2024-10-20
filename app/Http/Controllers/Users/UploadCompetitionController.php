@@ -12,7 +12,7 @@ class UploadCompetitionController extends Controller
      */
     public function index()
     {
-        //
+        //ini males ya, jadi cuma pingin ngepush ke github aja
     }
 
     /**
