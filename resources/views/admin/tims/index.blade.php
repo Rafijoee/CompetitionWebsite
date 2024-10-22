@@ -52,7 +52,7 @@
                                 </td>
                                 <td class="px-6 py-4">{{ $team?->members()?->first()?->universitas }}</td>
                                 <td class="px-6 py-4">
-                                    <a href="{{ route('team.editStage', [$category_name, $team->id]) }}" class="font-medium text-[#40C6A1] hover:underline">Edit</a>
+                                    <a href="{{ route('team.editStage', [$category_name, $team->team_name]) }}" class="font-medium text-[#40C6A1] hover:underline">Edit</a>
                                 </td>
                             </tr>
                             @endforeach

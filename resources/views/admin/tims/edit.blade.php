@@ -3,7 +3,7 @@
         <div class="bg-[#F2FBFF] rounded-lg border-2 w-full h-auto">
             <h1 class="text-4xl font-bold justify-center flex m-10">Data Tim {{ $team->team_name }}</h1>
             <hr class="border-2 ">
-            <form action="{{ route('team.updateStage', [$category, $team->id]) }}" method="POST">
+            <form action="{{ route('team.updateStage', [$category, $team->team_name]) }}" method="POST">
                 @csrf
                 <div class="flex flex-col bg-white m-10">
                     <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-5">
