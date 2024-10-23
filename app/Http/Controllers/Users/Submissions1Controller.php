@@ -81,4 +81,9 @@ class Submissions1Controller extends Controller
             return redirect()->back()->with('error', 'Gagal mengupload proposal');
         }
     }
+
+    public function update(Request $request, string $id)
+    {
+        //abisini ngubah disini yaa
+    }   
 }

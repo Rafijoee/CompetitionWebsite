@@ -98,7 +98,6 @@ class DataTimController extends Controller
     public function updateTeamStage(Request $request, $category_name, $team_name)
     {
         $team = Teams::where('team_name', $team_name)->firstOrFail();
-        
         try {
             $team->update([
                 'stage_id' => $request->stage_id,
