@@ -21,10 +21,12 @@ class Submissions1Controller extends Controller
     public function index()
     {
         $user = Auth::user();
-        $can = $user->teams->stage_id;
-        // if ($can != 1) {
-        //     return redirect()->route('dashboard')->with('error', 'Anda tidak bisa mengakses halaman tersebut!');
-        // }
+        $team_id = Auth::user()->teams->id;
+        $stage_id = Auth::user()->teams->stage_id;
+        if (TeamSubmissions::where('team_id', $team_id)->where('stage_id', $stage_id)->doesntExist()) {
+            //garap disinii
+        }
+
         $fileOnUpload = Auth::user()->teams?->team_submission?->first()->path_1;
         $categorys_id = $user->teams->team_submission;
 
@@ -84,6 +86,6 @@ class Submissions1Controller extends Controller
 
     public function update(Request $request, string $id)
     {
-        //abisini ngubah disini yaa
+        //abisini ngubah disini yaa`
     }   
 }
