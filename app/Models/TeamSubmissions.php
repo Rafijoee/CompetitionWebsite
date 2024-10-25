@@ -19,6 +19,7 @@ class TeamSubmissions extends Model
     protected $fillable = [
         'team_id',
         'stage_id',
+        'path',
     ];
 
     /**
@@ -30,6 +31,7 @@ class TeamSubmissions extends Model
         'id' => 'integer',
         'team_id' => 'integer',
         'stage_id' => 'integer',
+        'path'=>'string',
     ];
 
     public function team(): BelongsTo
