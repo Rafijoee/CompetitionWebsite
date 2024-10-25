@@ -59,11 +59,11 @@
                                     to upload</span> or drag and drop</p>
                             <p class="text-xs text-gray-500 dark:text-gray-400">ZIP (MAX:5mb)</p>
                         </div>
-                        <input id="dropzone-file" type="file" class="hidden" name="submission1" accept="application/zip" />
+                        <input id="dropzone-file" type="file" class="hidden" name="submission" accept="application/zip" />
                     </label>
                 </div>
 
-                @error('submission1')
+                @error('submission')
                 <div class="mt-2 text-sm text-red-500">
                     {{ $message }}
                 </div>

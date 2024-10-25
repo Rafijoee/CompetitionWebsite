@@ -23,18 +23,20 @@ class Submissions1Controller extends Controller
         $user = Auth::user();
         $team_id = Auth::user()->teams->id;
         $stage_id = Auth::user()->teams->stage_id;
-        if (TeamSubmissions::where('team_id', $team_id)->where('stage_id', $stage_id)->doesntExist()) {
-            //garap disinii
-        }
-
-        $fileOnUpload = Auth::user()->teams?->team_submission?->first()->path_1;
-        $categorys_id = $user->teams->team_submission;
-
-        return view('users.submisson1.index', compact('categorys_id', 'fileOnUpload'));
+        $category = Auth::user()->teams->category_id;
+        $fileOnUpload = TeamSubmissions::where('team_id', $team_id)->where('stage_id', $stage_id)->pluck('path')->first();
+        $mimes = Auth::user()->teams->stage->file_type;
+        
+        return view('users.submisson1.index', compact('category', 'fileOnUpload'));
     }
-
+    
     public function store(Request $request)
     {
+        
+        $mimes = Auth::user()->teams->stage->file_type;
+        $stage_id = Auth::user()->teams->stage_id;
+        $team_id = Auth::user()->teams->id;
+        $fileOnUpload = TeamSubmissions::where ('team_id', $team_id)->where('stage_id', $stage_id)->pluck('path')->first();
         // Membuat direktori jika belum ada
         $directory = public_path('submission1');
         if (!File::isDirectory($directory)) {
@@ -42,20 +44,50 @@ class Submissions1Controller extends Controller
         }
 
         try {
-            $validator = Validator::make($request->all(), [
-                'submission1' => 'required|mimes:zip|max:5120',
-            ], [
-                'submission1.required' => 'The submission file is required.',
-                'submission1.mimes' => 'The submission file must be a ZIP file.',
-                'submission1.max' => 'The submission file size must not exceed 5MB.',
-            ]);
+            if ($mimes = 'pdf') {
+                $validator = Validator::make($request->all(), [
+                    'submission' => 'required|mimes:pdf|max:5120',
+                ], [
+                    'submission.required' => 'The submission file is required.',
+                    'submission.mimes' => 'The submission file must be a PDF file.',
+                    'submission.max' => 'The submission file size must not exceed 5MB.',
+                ]);
+            } else if ($mimes = 'zip') {
+                $validator = Validator::make($request->all(), [
+                    'submission' => 'required|mimes:zip|max:5120',
+                ], [
+                    'submission.required' => 'The submission file is required.',
+                    'submission.mimes' => 'The submission file must be a ZIP file.',
+                    'submission.max' => 'The submission file size must not exceed 5MB.',
+                ]);
+            } else if ($mimes = 'txt'){
+                $validator = Validator::make($request->all(), [
+                    'submission' => 'required|mimes:txt|max:5120',
+                ], [
+                    'submission.required' => 'The submission file is required.',
+                    'submission.mimes' => 'The submission file must be a TXT file.',
+                    'submission.max' => 'The submission file size must not exceed 5MB.',
+                ]);
+            } else if ($mimes = 'img') {
+                $validator = Validator::make($request->all(), [
+                    'submission' => 'required|mimes:img|max:5120',
+                ], [
+                    'submission.required' => 'The submission file is required.',
+                    'submission.mimes' => 'The submission file must be a IMG file.',
+                    'submission.max' => 'The submission file size must not exceed 5MB.',
+                ]);
+            }
 
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
             
 
-            if ($request->hasFile('submission1')) {
+            if ($fileOnUpload) {
+                // lanjut disini
+            }
+
+            if ($request->hasFile('submission')) {
                 $team_id = Auth::user()->teams->id;
                 $fileOnUpload = Auth::user()->teams?->team_submission?->first()->path_1;
 
