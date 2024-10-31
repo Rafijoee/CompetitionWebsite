@@ -16,8 +16,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 
-
-class Submissions1Controller extends Controller
+class SubmissionsController extends Controller
 {
     public function index()
     {

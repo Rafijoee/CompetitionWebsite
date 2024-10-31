@@ -3,7 +3,7 @@
 use App\Http\Controllers\Admin\CheckStageController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Submissions1Controller;
+use App\Http\Controllers\Users\SubmissionsController;
 use App\Http\Controllers\Users\ProfilesController;
 use App\Http\Controllers\Sub1Controller;
 use App\Http\Controllers\Users\Submissions1Controller as UsersSubmissions1Controller;
@@ -45,8 +45,7 @@ Route::get('/dashboard2', function () {
 })->middleware(['auth', 'verified']);
 
 
-Route::get('/submissions1', [UsersSubmissions1Controller::class, 'index']);
-
+Route::get('/submission', [SubmissionsController::class, 'index'])->middleware(['auth', 'verified']);
 
 Route::get('/search', [CheckStageController::class, 'search']);
 
@@ -58,9 +57,7 @@ Route::get('/search', [CheckStageController::class, 'search']);
 
 require __DIR__ . '/Users/profiles.php';
 require __DIR__ . '/Users/payment.php';
-require __DIR__ . '/Users/submisson1.php';
-require __DIR__ . '/Users/submisson2.php';
-require __DIR__ . '/Users/final.php';
+require __DIR__ . '/Users/submisson.php';
 require __DIR__ . '/Users/detailcategory.php';
 require __DIR__ . '/Admin/checkingstage.php';
 require __DIR__ . '/Admin/checkingpayment.php';
