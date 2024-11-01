@@ -74,7 +74,7 @@ class MakeCompetitionController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return view('admin.makecompetition.show');
     }
 
     /**
