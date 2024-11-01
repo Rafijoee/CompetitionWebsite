@@ -6,7 +6,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Users\SubmissionsController;
 use App\Http\Controllers\Users\ProfilesController;
 use App\Http\Controllers\Sub1Controller;
-use App\Http\Controllers\Users\Submissions1Controller as UsersSubmissions1Controller;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,7 +31,6 @@ Route::get('/proposal2/{filename}', [Controller::class, 'ktisub1'])->name('ktisu
 
 // Dashboard - mada
 Route::get('/dashboard', [ProfilesController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/submission', [ProfilesController::class, 'submission'])->middleware(['auth', 'verified']);
 Route::get('/teamdata', function () { // #2 Team data
     return view('dashboard.team'); // 
 })->middleware(['auth', 'verified']);
@@ -45,8 +43,6 @@ Route::get('/dashboard2', function () {
 })->middleware(['auth', 'verified']);
 
 
-Route::get('/submission', [SubmissionsController::class, 'index'])->middleware(['auth', 'verified']);
-
 Route::get('/search', [CheckStageController::class, 'search']);
 
 
@@ -57,7 +53,7 @@ Route::get('/search', [CheckStageController::class, 'search']);
 
 require __DIR__ . '/Users/profiles.php';
 require __DIR__ . '/Users/payment.php';
-require __DIR__ . '/Users/submisson.php';
+require __DIR__ . '/Users/submissions.php';
 require __DIR__ . '/Users/detailcategory.php';
 require __DIR__ . '/Admin/checkingstage.php';
 require __DIR__ . '/Admin/checkingpayment.php';
