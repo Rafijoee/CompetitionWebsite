@@ -74,6 +74,7 @@ class MakeCompetitionController extends Controller
      */
     public function show(string $id)
     {
+        //ini nanti disini ngubahnya
         return view('admin.makecompetition.show');
     }
 
@@ -93,7 +94,7 @@ class MakeCompetitionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        //ini nanti disini juga ngubahnya
     }
 
     /**
@@ -101,6 +102,7 @@ class MakeCompetitionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // ini nanti disini ngubahnya
+    
     }
 }
