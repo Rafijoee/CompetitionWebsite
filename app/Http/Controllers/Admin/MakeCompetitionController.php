@@ -74,8 +74,10 @@ class MakeCompetitionController extends Controller
      */
     public function show(string $id)
     {
-        //ini nanti disini ngubahnya
-        return view('admin.makecompetition.show');
+        $category = Categories::findOrFail($id);
+        $stages = $category->stages;
+
+        return view('admin.makecompetition.show', compact('category', 'stages'));
     }
 
     /**
@@ -83,10 +85,8 @@ class MakeCompetitionController extends Controller
      */
     public function edit(string $id)
     {
-        
         $category = Categories::findOrFail($id);
-        
-        return view('admin.makecompetition.edit', compact('category'));
+        return view ('admin.makecompetition.edit', compact('category'));
     }
 
     /**
@@ -94,7 +94,27 @@ class MakeCompetitionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //ini nanti disini juga ngubahnya
+        DB::beginTransaction();
+        try {
+            // Validasi request
+            $validated = $request->validate([
+                'category_name' => 'required|string|max:255',
+            ]);
+    
+            // Update category
+            $category = Categories::findOrFail($id);
+            $category->update([
+                'category_name' => $validated['category_name'],
+            ]);
+    
+            DB::commit();
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to update category and stages: ' . $e->getMessage());
+        }
+    
+        return redirect()->route('makecompetition.index')->with('success', 'Category and stages updated successfully.');
     }
 
     /**
@@ -105,4 +125,6 @@ class MakeCompetitionController extends Controller
         // ini nanti disini ngubahnya
     
     }
+
+
 }

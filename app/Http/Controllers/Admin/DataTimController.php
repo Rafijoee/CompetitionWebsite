@@ -82,7 +82,6 @@ class DataTimController extends Controller
             $i++;
             $teamsByStages[$i] = Teams::where('stage_id', $stage->id)->get();
         }
-
         return view('admin.tims.index', compact('category_name', 'teamsByStages'));
     }
 

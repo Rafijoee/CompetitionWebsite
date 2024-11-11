@@ -59,5 +59,6 @@ require __DIR__ . '/Admin/checkingstage.php';
 require __DIR__ . '/Admin/checkingpayment.php';
 require __DIR__ . '/Admin/download.php';
 require __DIR__ . '/Admin/makecompetition.php';
+require __DIR__ . '/Admin/makestage.php';
 require __DIR__ . '/Users/faq.php';
 require __DIR__ . '/auth.php';
