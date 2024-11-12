@@ -23,7 +23,7 @@
             <div class="m-5 flex justify-between items-center">
                 <h1 class="text-2xl font-bold text-red-700">Detail {{ $category->category_name }}</h1>
                 <a href="{{ route('makecompetition.edit', $category->id) }}" class="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full hover:bg-gray-300">Edit </a>
-                <a href="{{ route('makecompetition.create') }}" class="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full hover:bg-gray-300">
+                <a href="{{ route("makestage.new", $category->id) }}" class="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full hover:bg-gray-300">
                     <i class="fa-solid fa-plus"></i>
                 </a>
             </div>
