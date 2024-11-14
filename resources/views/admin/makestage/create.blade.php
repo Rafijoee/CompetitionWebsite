@@ -4,7 +4,7 @@
             
             <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Create Category with Stages</h1>
             
-            <form action="{{ route('make') }}" method="POST" class="space-y-6 px-8">
+            <form action="{{ route('makestage.store2', ['id' => $category->id]) }}" method="POST" class="space-y-6 px-8">
                 @csrf                
                 <!-- Input untuk Jumlah Stages -->
                 <div>
