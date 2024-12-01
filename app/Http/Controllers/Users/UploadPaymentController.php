@@ -52,7 +52,12 @@ class UploadPaymentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+
+        }catch(\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal mengupload bukti pembayaran');
+
+        }
     }
 
     /**
